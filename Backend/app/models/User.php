@@ -8,6 +8,11 @@ class User
     $this->db = new Database;
   }
 
+  public function getAll()
+  {
+    $this->db->query('SELECT * FROM users');
+    return $this->db->resultSet();
+  }
   // Regsiter user
   public function register($data)
   {

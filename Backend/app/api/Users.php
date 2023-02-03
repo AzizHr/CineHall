@@ -11,7 +11,13 @@ class Users extends Controller
     $this->reservationModel = $this->model('Reservation');
   }
 
-
+  public function all()
+  {
+    header("Access-Control-Allow-Methods: GET");
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
+    echo json_encode($this->userModel->getAll());
+  }
   public function reserve()
   {
 
@@ -48,6 +54,9 @@ class Users extends Controller
 
   public function register()
   {
+    header("Access-Control-Allow-Methods: POST");
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
     // Check for POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -70,7 +79,7 @@ class Users extends Controller
           ]);
         }
       } else {
-        echo json_encode(['error' => "Registered Failled"]);
+        echo json_encode(['Error' => "Registered Failled"]);
       }
     }
   }
@@ -78,6 +87,9 @@ class Users extends Controller
   public function login()
   {
 
+    header("Access-Control-Allow-Methods: POST");
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $_POST = filter_input_array(INPUT_POST, 513);
