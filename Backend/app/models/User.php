@@ -18,7 +18,7 @@ class User
   {
     $this->db->query('INSERT INTO users (unique_key , first_name, last_name) VALUES(:unique_key , :first_name , :last_name)');
     // Bind values
-    $this->db->bind(':unique_key', $data['unique_key']);
+    $this->db->bind(':unique_key', $data['user_ref']);
     $this->db->bind(':first_name', $data['first_name']);
     $this->db->bind(':last_name', $data['last_name']);
 

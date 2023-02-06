@@ -65,17 +65,17 @@ class Users extends Controller
       $_POST = filter_input_array(INPUT_POST, 513);
 
       $data = [
-        'unique_key' => bin2hex($bytes),
+        'user_ref' => bin2hex($bytes),
         'first_name' => $_POST['fname'],
         'last_name' => $_POST['lname']
       ];
 
 
       if ($this->userModel->register($data)) {
-        if ($this->userModel->login($data['unique_key'])) {
+        if ($this->userModel->login($data['user_ref'])) {
           echo json_encode([
             'Success' => "Registered With Success",
-            'Ref' => 'Here is your ref to login with : `' . $this->userModel->login($data['unique_key'])['unique_key'] . '`'
+            'Ref' => 'Here is your ref to login with : `' . $this->userModel->login($data['user_ref'])['unique_key'] . '`'
           ]);
         }
       } else {
@@ -94,7 +94,7 @@ class Users extends Controller
 
       $_POST = filter_input_array(INPUT_POST, 513);
 
-      $unique_key = $_POST['unique_key'];
+      $unique_key = $_POST['user_ref'];
 
       if (empty($unique_key)) {
         echo json_encode(["error" => "please enter your unique key"]);

@@ -1,22 +1,24 @@
 <template>
-  <div class="register">
-    <h1 class="text-center mt-12 text-xl">Register Now</h1>
-    <form class="grid gap-6">
+  <div class="register bg-cover bg-center bg-no-repeat h-screen px-5">
+    <form class="grid gap-6 md:gap-12 content-center md:w-1/2 h-full mx-auto">
+      <h1 class="text-center text-lg md:text-3xl font-bold md:text-left text-white">Register Now</h1>
       <input
+        class="border py-4 pl-3 rounded"
         type="text"
         name="fname"
-        placeholder="last name..."
+        placeholder="Enter your last name"
         v-model="fname"
       />
       <input
+      class="border py-4 pl-3 rounded"
         type="text"
         name="lname"
-        placeholder="last name..."
+        placeholder="Enter your last name"
         v-model="lname"
       />
       <input
         type="button"
-        class="bg-red-400"
+        class="bg-red-400 py-3 w-28 rounded md:mx-0 mx-auto"
         @click="register()"
         value="Register"
       />
@@ -74,3 +76,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.register {
+  background-image: url('../assets/register_main_image.jpg');
+  /* object-fit: contain; */
+  /* background-size: contain;
+  height: 100vh; */
+}
+</style>
