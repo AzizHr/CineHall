@@ -47,10 +47,7 @@ export default {
       movies: "",
     };
   },
-  components: {
-    CardComponent,
-    NavbarComponent,
-  },
+ 
   mounted() {
     axois.get("http://localhost/CineHall/Backend/movies/movies").then((res) => {
       this.movies = res.data;

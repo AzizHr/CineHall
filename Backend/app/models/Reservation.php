@@ -38,7 +38,7 @@ class Reservation
     // Increase Hall Capacity When New Reservation Added
     public function increaseCapacity($id)
     {
-        $this->db->query('UPDATE halls SET capacity = capacity + 1 WHERE id = :id');
+        $this->db->query('UPDATE halls SET seats = seats + 1 WHERE id = :id');
         $this->db->bind(":id", $id);
         if ($this->db->execute()) {
             return true;
@@ -51,7 +51,7 @@ class Reservation
     // Decrease Hall Capacity When New Reservation Deleted
     public function decreaseCapacity($id)
     {
-        $this->db->query('UPDATE halls SET capacity = capacity - 1 WHERE id = :id');
+        $this->db->query('UPDATE halls SET seats = seats - 1 WHERE id = :id');
         $this->db->bind(":id", $id);
         if ($this->db->execute()) {
             return true;
@@ -79,7 +79,7 @@ class Reservation
 
     public function getCapacity($hall_id)
     {
-        $this->db->query('SELECT capacity AS "reserved" FROM halls WHERE id = :hall_id');
+        $this->db->query('SELECT seats AS "reserved" FROM halls WHERE id = :hall_id');
         $this->db->bind(":hall_id", $hall_id);
 
         $result = $this->db->single();
@@ -87,7 +87,7 @@ class Reservation
         if ($result == false) {
             return false;
         } else {
-            if ($result['reserved'] === 5) {
+            if ($result['reserved'] === 30) {
                 return false;
             } else {
                 return true;

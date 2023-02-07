@@ -33,4 +33,12 @@ class Movies extends Controller
       echo json_encode(["Error" => "404 ERROR"]);
     }
   }
+
+  public function reserved_seats($movie_id) {
+    if($this->movieModel->getMovieReservedSeats($movie_id)) {
+      echo json_encode($this->movieModel->getMovieReservedSeats($movie_id));
+    } else {
+      echo json_encode(["Error" => "404 ERROR"]);
+    }
+  }
 }

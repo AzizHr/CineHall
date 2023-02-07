@@ -20,4 +20,10 @@ class Movie
     $this->db->bind(':movie_id', $movie_id);
     return $this->db->single();
   }
+
+  public function getMovieReservedSeats($movie_id) {
+    $this->db->query('SELECT seat_number as "reserved_seat" from reservations inner join halls on reservations.hall_id = halls.id inner join movies on halls.id = movies.hall_id and movies.id = :movie_id');
+    $this->db->bind(':movie_id', $movie_id);
+    return $this->db->getColums();
+  }
 }
