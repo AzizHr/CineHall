@@ -1,7 +1,11 @@
 <template>
   <div class="register bg-cover bg-center bg-no-repeat h-screen px-5">
     <form class="grid gap-6 md:gap-12 content-center md:w-1/2 h-full mx-auto">
-      <h1 class="text-center text-lg md:text-3xl font-bold md:text-left text-white">Register Now</h1>
+      <h1
+        class="text-center text-lg md:text-3xl font-bold md:text-left text-white"
+      >
+        Register Now
+      </h1>
       <input
         class="border py-4 pl-3 rounded"
         type="text"
@@ -10,7 +14,7 @@
         v-model="fname"
       />
       <input
-      class="border py-4 pl-3 rounded"
+        class="border py-4 pl-3 rounded"
         type="text"
         name="lname"
         placeholder="Enter your last name"
@@ -64,10 +68,10 @@ export default {
           });
       } else {
         Swal.fire({
-              icon: "error",
-              title: "Failed",
-              text: 'Please Fill in inputs',
-            });
+          icon: "error",
+          title: "Failed",
+          text: "Please Fill in inputs",
+        });
       }
     },
     reset() {
@@ -79,7 +83,7 @@ export default {
 
 <style scoped>
 .register {
-  background-image: url('../assets/register_main_image.jpg');
+  background-image: url("../assets/register_main_image.jpg");
   /* object-fit: contain; */
   /* background-size: contain;
   height: 100vh; */

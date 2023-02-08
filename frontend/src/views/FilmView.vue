@@ -122,7 +122,7 @@ export default {
       const formdata = new FormData();
       formdata.append("hall_id", 2);
       formdata.append("seat_number", 14);
-      formdata.append("user_id", 'b59ce932');
+      formdata.append("user_id", "b59ce932");
       axios({
         url: "http://localhost/CineHall/Backend/users/reserve",
         method: "post",
