@@ -1,26 +1,26 @@
 <?php
+
 class Users extends Controller
 {
-
   private $userModel;
   private $reservationModel;
 
   public function __construct()
   {
+    header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
     $this->userModel = $this->model('User');
     $this->reservationModel = $this->model('Reservation');
   }
 
   public function all()
   {
-    header("Access-Control-Allow-Methods: GET");
-    header('Access-Control-Allow-Origin: *');
-    header('Content-Type: application/json');
     echo json_encode($this->userModel->getAll());
   }
   public function reserve()
   {
 
+    header("Access-Control-Allow-Methods: POST");
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $_POST = filter_input_array(INPUT_POST, 513);
@@ -37,16 +37,16 @@ class Users extends Controller
             if ($this->reservationModel->increaseCapacity($data['hall_id'])) {
               echo json_encode(['Success' => "Reserved With Success"]);
             } else {
-              echo json_encode(['error' => "Error reserving"]);
+              echo json_encode(['Error' => "Error reserving"]);
             }
           } else {
-            echo json_encode(['error' => "Error reserving"]);
+            echo json_encode(['Error' => "Error reserving"]);
           }
         } else {
-          echo json_encode(['error' => "This hall is full"]);
+          echo json_encode(['Error' => "This hall is full"]);
         }
       } else {
-        echo json_encode(['error' => "This seat is already taken"]);
+        echo json_encode(['Error' => "This seat is already taken"]);
       }
     }
   }
@@ -55,8 +55,6 @@ class Users extends Controller
   public function register()
   {
     header("Access-Control-Allow-Methods: POST");
-    header('Access-Control-Allow-Origin: *');
-    header('Content-Type: application/json');
     // Check for POST
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -88,8 +86,6 @@ class Users extends Controller
   {
 
     header("Access-Control-Allow-Methods: POST");
-    header('Access-Control-Allow-Origin: *');
-    header('Content-Type: application/json');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $_POST = filter_input_array(INPUT_POST, 513);

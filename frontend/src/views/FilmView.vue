@@ -47,6 +47,7 @@
       >
         <button
           class="bg-red-500 hover:bg-red-600 hover:text-gray-300 text-gray-200 md:px-8 px-4 md:py-3 py-2 rounded md:font-bold md:ring-2 ring-red-300"
+          @click="book()"
         >
           Book
         </button>
@@ -119,7 +120,9 @@ export default {
   methods: {
     book() {
       const formdata = new FormData();
-      formdata.append("seat_number", this.seat_number);
+      formdata.append("hall_id", 2);
+      formdata.append("seat_number", 14);
+      formdata.append("user_id", 'b59ce932');
       axios({
         url: "http://localhost/CineHall/Backend/users/reserve",
         method: "post",
@@ -127,17 +130,19 @@ export default {
       })
         .then((res) => {
           // after sucess
-          this.reset();
           Swal.fire({
             icon: "success",
             title: "Done!",
             text: `${res.data.Success}`,
-            footer: `<a>${res.data.Ref}</a>`,
           });
         })
         .catch((err) => {
           // on error
-          alert(err.Error);
+          Swal.fire({
+            icon: "success",
+            title: "Done!",
+            text: `${err.data.Error}`,
+          });
         });
     },
   },
