@@ -24,8 +24,9 @@ class Users extends Controller
 
     $data = [
       'hall_id' => $_POST['hall_id'],
-      'user_id' => 'b59ce932',
-      'seat_number' => $_POST['seat_number']
+      'user_ref' => $_POST['user_ref'],
+      'seat_number' => $_POST['seat_number'],
+      'showed_at' => $_POST['showed_at']
     ];
 
     if (!$this->reservationModel->getReservation(intval($data['seat_number']), intval($data['hall_id']))) {
@@ -104,14 +105,17 @@ class Users extends Controller
 
   public function delete($res_id)
   {
-    if ($this->reservationModel->getHallId($res_id)) {
-      $hall_id = $this->reservationModel->getHallId($res_id);
-      if ($this->reservationModel->delete($res_id)) {
-        if ($this->reservationModel->decreaseCapacity($hall_id)) {
-          echo json_encode(["Success" => "Deleted With Success"]);
+    header("Access-Control-Allow-Methods: POST");
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if ($this->reservationModel->getHallId($res_id)) {
+        $hall_id = $this->reservationModel->getHallId($res_id);
+        if ($this->reservationModel->delete($res_id)) {
+          if ($this->reservationModel->decreaseCapacity($hall_id)) {
+            echo json_encode(["Success" => "Deleted With Success"]);
+          }
+        } else {
+          echo json_encode(["Error" => "You can only cancel reservations that are at least one day before the show date"]);
         }
-      } else {
-        echo json_encode(["Error" => "You can only cancel the reservations that are at least one day before the show date"]);
       }
     }
   }

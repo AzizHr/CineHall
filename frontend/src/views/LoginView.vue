@@ -48,7 +48,7 @@ export default {
             // after sucess
             this.reset();
             window.location = "http://localhost:8080/my-reservations";
-            localStorage.setItem("user_ref", res.data.unique_key);
+            localStorage.setItem("user_ref", res.data.user_ref);
             localStorage.setItem("user_name", res.data.first_name);
           })
           .catch((err) => {

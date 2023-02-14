@@ -16,9 +16,9 @@ class User
   // Regsiter user
   public function register($data)
   {
-    $this->db->query('INSERT INTO users (unique_key , first_name, last_name) VALUES(:unique_key , :first_name , :last_name)');
+    $this->db->query('INSERT INTO users (user_ref , first_name, last_name) VALUES(:user_ref , :first_name , :last_name)');
     // Bind values
-    $this->db->bind(':unique_key', $data['user_ref']);
+    $this->db->bind(':user_ref', $data['user_ref']);
     $this->db->bind(':first_name', $data['first_name']);
     $this->db->bind(':last_name', $data['last_name']);
 
@@ -31,10 +31,10 @@ class User
   }
 
   // Login User
-  public function login($unique_key)
+  public function login($user_ref)
   {
-    $this->db->query('SELECT * FROM users WHERE unique_key = :unique_key');
-    $this->db->bind(':unique_key', $unique_key);
+    $this->db->query('SELECT * FROM users WHERE user_ref = :user_ref');
+    $this->db->bind(':user_ref', $user_ref);
 
     $row = $this->db->single();
 
