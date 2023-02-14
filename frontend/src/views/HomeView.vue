@@ -1,7 +1,84 @@
 <template>
   <div>
     <div class="home bg-cover bg-center bg-no-repeat h-screen">
-      <NavbarComponent />
+      <NavbarComponent v-if="!user_ref" />
+
+      <nav
+        v-if="user_ref"
+        class="border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900"
+      >
+        <div
+          class="container flex flex-wrap items-center justify-between mx-auto"
+        >
+          <a href="http://localhost:8080/" class="flex items-center">
+            <img src="../assets/popcorn.png" class="h-6 mr-3 sm:h-9" alt="" />
+            <span
+              class="self-center text-xl font-semibold whitespace-nowrap text-white"
+              >CineHall</span
+            >
+          </a>
+          <button
+            data-collapse-toggle="navbar-default"
+            type="button"
+            class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-default"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-6 h-6"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul
+              class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg backdrop-blur-sm bg-white/10 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+            >
+              <li>
+                <a
+                  class="block py-2 pl-3 pr-4 text-red-600 rounded md:bg-transparent md:p-0 dark:text-white"
+                  ><router-link to="/">Home</router-link></a
+                >
+              </li>
+              <li>
+                <a
+                  class="block py-2 pl-3 pr-4 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  ><router-link to="/films">Films</router-link></a
+                >
+              </li>
+              <li>
+                <a
+                  class="block py-2 pl-3 pr-4 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  ><router-link to="/my">My Reservations</router-link></a
+                >
+              </li>
+              <li>
+                <a
+                  class="block py-2 pl-3 pr-4 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  ><router-link to="/">{{ user_name }}</router-link></a
+                >
+              </li>
+              <li>
+                <a
+                  href=""
+                  class="block py-2 pl-3 pr-4 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  @click="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       <h1
         class="md:text-5xl text-xl text-gray-100 mt-32 md:ml-10 ml-20 md:w-1/2 leading-relaxed"
       >
@@ -32,22 +109,26 @@
 
 <script>
 import NavbarComponent from "@/components/NavbarComponent.vue";
-import HeroComponent from "@/components/HeroComponent.vue";
 import CardComponent from "@/components/CardComponent.vue";
 import axois from "axios";
 export default {
   name: "HomeView",
   components: {
     NavbarComponent,
-    HeroComponent,
     CardComponent,
   },
   data() {
     return {
       movies: "",
+      user_ref: localStorage.getItem("user_ref"),
+      user_name: localStorage.getItem("user_name"),
     };
   },
-
+  methods: {
+    logout() {
+      localStorage.clear();
+    },
+  },
   mounted() {
     axois.get("http://localhost/CineHall/Backend/movies/movies").then((res) => {
       this.movies = res.data;

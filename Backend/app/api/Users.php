@@ -8,7 +8,7 @@ class Users extends Controller
   public function __construct()
   {
     header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
+    header('Content-Type: application/json');
     $this->userModel = $this->model('User');
     $this->reservationModel = $this->model('Reservation');
   }
@@ -21,33 +21,29 @@ header('Content-Type: application/json');
   {
 
     header("Access-Control-Allow-Methods: POST");
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      $_POST = filter_input_array(INPUT_POST, 513);
+    $data = [
+      'hall_id' => $_POST['hall_id'],
+      'user_id' => 'b59ce932',
+      'seat_number' => $_POST['seat_number']
+    ];
 
-      $data = [
-        'hall_id' => $_POST['hall_id'],
-        'user_id' => $_POST['user_id'],
-        'seat_number' => $_POST['seat_number']
-      ];
-
-      if (!$this->reservationModel->getReservation(intval($data['seat_number']), intval($data['hall_id']))) {
-        if ($this->reservationModel->getCapacity(intval($data['hall_id']))) {
-          if ($this->reservationModel->add($data)) {
-            if ($this->reservationModel->increaseCapacity($data['hall_id'])) {
-              echo json_encode(['Success' => "Reserved With Success"]);
-            } else {
-              echo json_encode(['Error' => "Error reserving"]);
-            }
+    if (!$this->reservationModel->getReservation(intval($data['seat_number']), intval($data['hall_id']))) {
+      if ($this->reservationModel->getCapacity(intval($data['hall_id']))) {
+        if ($this->reservationModel->add($data)) {
+          if ($this->reservationModel->increaseCapacity($data['hall_id'])) {
+            echo json_encode(['Success' => "Reserved With Success"]);
           } else {
             echo json_encode(['Error' => "Error reserving"]);
           }
         } else {
-          echo json_encode(['Error' => "This hall is full"]);
+          echo json_encode(['Error' => "Error reserving"]);
         }
       } else {
-        echo json_encode(['Error' => "This seat is already taken"]);
+        echo json_encode(['Error' => "This hall is full"]);
       }
+    } else {
+      echo json_encode(['Error' => "This seat is already taken"]);
     }
   }
 
@@ -126,10 +122,10 @@ header('Content-Type: application/json');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $_POST = filter_input_array(INPUT_POST, 513);
-      $user_id = $_POST['user_id'];
+      $user_ref = $_POST['user_ref'];
 
-      if ($this->reservationModel->getAll($user_id)) {
-        echo json_encode($this->reservationModel->getAll($user_id));
+      if ($this->reservationModel->getAll($user_ref)) {
+        echo json_encode($this->reservationModel->getAll($user_ref));
       } else {
         echo json_encode(["None" => "You have no reservations yet"]);
       }

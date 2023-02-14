@@ -4,6 +4,7 @@ import FilmsView from "../views/FilmsView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView";
 import FilmView from "../views/FilmView";
+import MyReservations from "../views/MyReservations.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/movie",
     name: "movie",
     component: FilmView,
+  },
+  {
+    path: "/my-reservations",
+    name: "my-reservations",
+    component: MyReservations,
   },
 ];
 

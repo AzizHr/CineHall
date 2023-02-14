@@ -31,37 +31,37 @@
       class="grid justify-items-center grid-cols-6 gap-2 mt-10 w-1/2 mx-auto pb-10"
     >
       <input
-        v-for="(n, index) in 30"
+        v-for="n in 30"
         :key="n"
         type="checkbox"
-        :checked="reservedSeats[index] === n"
-        :disabled="reservedSeats[index] === n"
+        :checked="reservedSeats.includes(n)"
+        :disabled="reservedSeats.includes(n)"
         :value="n"
-        :name="`seat_number${n}`"
-        class="w-12 h-12"
+        name="seat_number"
+        class="w-12 h-12 seat"
       />
     </div>
-    <form>
-      <div
-        class="flex justify-center justify-between gap-6 items-center w-1/2 mx-auto mb-10"
+
+    <div
+      class="flex justify-center justify-between gap-6 items-center w-1/2 mx-auto mb-10"
+    >
+      <button
+        class="bg-red-500 hover:bg-red-600 hover:text-gray-300 text-gray-200 md:px-8 px-4 md:py-3 py-2 rounded md:font-bold md:ring-2 ring-red-300"
+        @click="book()"
       >
-        <button
-          class="bg-red-500 hover:bg-red-600 hover:text-gray-300 text-gray-200 md:px-8 px-4 md:py-3 py-2 rounded md:font-bold md:ring-2 ring-red-300"
-          @click="book()"
-        >
-          Book
-        </button>
-        <p class="md:text-xl">
-          Presented in
-          <span class="text-red-500 font-bold">{{ movie.hall_name }}</span>
-        </p>
-      </div>
-    </form>
+        Book
+      </button>
+      <p class="md:text-xl">
+        Presented in
+        <span class="text-red-500 font-bold">{{ movie.hall_name }}</span>
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "FilmView",
   mounted() {
@@ -70,80 +70,69 @@ export default {
         `http://localhost/CineHall/Backend/movies/movie_info/${this.$route.query.is}`
       )
       .then((res) => (this.movie = res.data));
-    axios
-      .get(
-        `http://localhost/CineHall/Backend/movies/reserved_seats/${this.$route.query.is}`
-      )
-      .then((res) => (this.reservedSeats = res.data));
+    this.updateRes();
   },
   data() {
     return {
-      movie: {},
+      movie: "",
       reservedSeats: [],
-      hall_id: "",
-      user_ref: "",
-      seat_number: "",
-      // seats: [
-      //   { id: 1, isChecked: true },
-      //   { id: 2, isChecked: false },
-      //   { id: 3, isChecked: false },
-      //   { id: 4, isChecked: false },
-      //   { id: 5, isChecked: false },
-      //   { id: 6, isChecked: false },
-      //   { id: 7, isChecked: false },
-      //   { id: 8, isChecked: false },
-      //   { id: 9, isChecked: false },
-      //   { id: 10, isChecked: false },
-      //   { id: 11, isChecked: true },
-      //   { id: 12, isChecked: false },
-      //   { id: 13, isChecked: false },
-      //   { id: 14, isChecked: false },
-      //   { id: 15, isChecked: false },
-      //   { id: 16, isChecked: false },
-      //   { id: 17, isChecked: false },
-      //   { id: 18, isChecked: false },
-      //   { id: 19, isChecked: false },
-      //   { id: 20, isChecked: false },
-      //   { id: 21, isChecked: false },
-      //   { id: 22, isChecked: false },
-      //   { id: 23, isChecked: false },
-      //   { id: 24, isChecked: false },
-      //   { id: 25, isChecked: false },
-      //   { id: 26, isChecked: false },
-      //   { id: 27, isChecked: false },
-      //   { id: 28, isChecked: false },
-      //   { id: 29, isChecked: false },
-      //   { id: 30, isChecked: false },
-      // ],
     };
   },
   methods: {
+    updateRes() {
+      axios
+        .get(
+          `http://localhost/CineHall/Backend/movies/reserved_seats/${this.$route.query.is}`
+        )
+        .then((res) => (this.reservedSeats = res.data));
+    },
+    getChecked() {
+      let seats = document.getElementsByClassName("seat");
+      let checked_seat;
+      for (let i = 0; i < seats.length; i++) {
+        if (seats[i].checked && !seats[i].disabled) {
+          checked_seat = parseInt(seats[i].value);
+        }
+      }
+      return checked_seat;
+    },
     book() {
-      const formdata = new FormData();
-      formdata.append("hall_id", 2);
-      formdata.append("seat_number", 14);
-      formdata.append("user_id", "b59ce932");
-      axios({
-        url: "http://localhost/CineHall/Backend/users/reserve",
-        method: "post",
-        data: formdata,
-      })
-        .then((res) => {
-          // after sucess
-          Swal.fire({
-            icon: "success",
-            title: "Done!",
-            text: `${res.data.Success}`,
-          });
+      if (this.getChecked() !== null && this.getChecked() > 0) {
+        const formdata = new FormData();
+        formdata.append("hall_id", this.movie.hall_id);
+        formdata.append("seat_number", this.getChecked());
+        axios({
+          url: "http://localhost/CineHall/Backend/users/reserve",
+          method: "post",
+          data: formdata,
         })
-        .catch((err) => {
-          // on error
-          Swal.fire({
-            icon: "success",
-            title: "Done!",
-            text: `${err.data.Error}`,
+          .then((res) => {
+            // after sucess
+            Swal.fire({
+              icon: "success",
+              title: "Done!",
+              text: `${res.data.Success}`,
+            });
+            // console.log(res.data)
+            this.updateRes();
+          })
+          .catch((err) => {
+            // on error
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: `${res.data.Error}`,
+            });
+            // console.log(err.data)
           });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Done!",
+          text: "Please Select a Seat First",
         });
+        // console.log('Please Select a Seat First')
+      }
     },
   },
 };

@@ -10,7 +10,7 @@ class Reservation
 
     public function getAll($user_id)
     {
-        $this->db->query('SELECT * FROM reservations WHERE user_id = :user_id');
+        $this->db->query('SELECT reservations.* , halls.name AS "hall_name" FROM reservations INNER JOIN halls ON reservations.hall_id = halls.id AND user_id = :user_id');
         $this->db->bind(":user_id", $user_id);
         $result = $this->db->resultSet();
 

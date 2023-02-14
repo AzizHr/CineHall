@@ -47,11 +47,9 @@ export default {
           .then((res) => {
             // after sucess
             this.reset();
-            Swal.fire({
-              icon: "success",
-              title: "Done!",
-              text: `Welcome Again ${res.data.first_name} ${res.data.last_name}`,
-            });
+            window.location = "http://localhost:8080/my-reservations";
+            localStorage.setItem("user_ref", res.data.unique_key);
+            localStorage.setItem("user_name", res.data.first_name);
           })
           .catch((err) => {
             // on error
