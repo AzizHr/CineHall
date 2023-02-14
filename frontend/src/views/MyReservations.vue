@@ -178,7 +178,7 @@ export default {
           // Swal.fire({
           //   icon: "success",
           //   title: "Done!",
-          //   text: `${res.data}`,
+          //   text: `${res.data.Success}`,
           // });
           console.log(res.data);
         })
