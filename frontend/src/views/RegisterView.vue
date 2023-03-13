@@ -9,16 +9,16 @@
       <input
         class="border py-4 pl-3 rounded"
         type="text"
-        name="fname"
+        name="first_name"
         placeholder="Enter your last name"
-        v-model="fname"
+        v-model="first_name"
       />
       <input
         class="border py-4 pl-3 rounded"
         type="text"
-        name="lname"
+        name="last_name"
         placeholder="Enter your last name"
-        v-model="lname"
+        v-model="last_name"
       />
       <input
         type="button"
@@ -35,37 +35,39 @@ import axios from "axios";
 import Swal from "sweetalert2";
 export default {
   name: "RegisterView",
+  mounted() {
+    if (localStorage.getItem("client_ref")) {
+      window.location = "http://localhost:8080/";
+    }
+  },
   data() {
     return {
-      fname: "",
-      lname: "",
+      first_name: "",
+      last_name: "",
     };
   },
   methods: {
     register() {
       const formdata = new FormData();
-      formdata.append("fname", this.fname);
-      formdata.append("lname", this.lname);
-      if (this.fname != "" && this.lname != "") {
+      formdata.append("first_name", this.first_name);
+      formdata.append("last_name", this.last_name);
+      if (this.first_name != "" && this.last_name != "") {
         axios({
-          url: "http://localhost/CineHall/Backend/users/register",
+          url: "http://localhost/CineHall/api/clients/register",
           method: "post",
           data: formdata,
-        })
-          .then((res) => {
-            // after sucess
-            this.reset();
-            Swal.fire({
-              icon: "success",
-              title: "Done!",
-              text: `${res.data.Success}`,
-              footer: `<a>${res.data.Ref}</a>`,
-            });
-          })
-          .catch((err) => {
-            // on error
-            alert(err.Error);
+        }).then((res) => {
+          // after sucess
+          this.reset();
+          Swal.fire({
+            icon: "success",
+            title: "Registration Success",
+            html:
+              "You can login by clicking " +
+              '<a href="/login" class="text-blue-500 underline">here</a>',
+            footer: `<a>${res.data.Ref}</a>`,
           });
+        });
       } else {
         Swal.fire({
           icon: "error",

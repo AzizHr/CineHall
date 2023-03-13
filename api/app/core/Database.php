@@ -70,10 +70,10 @@ class Database
   }
 
   // Get result set as array of objects
-  public function resultSet()
+  public function all()
   {
-    $this->execute();
-    return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    self::execute();
+    return $this->stmt->fetchAll(PDO::FETCH_OBJ);
   }
 
   // Get single record as object
@@ -81,7 +81,7 @@ class Database
   {
     $this->execute();
 
-    return $this->stmt->fetch(PDO::FETCH_ASSOC);
+    return $this->stmt->fetch(PDO::FETCH_OBJ);
   }
 
   // Get row count
@@ -89,7 +89,7 @@ class Database
   {
     return $this->stmt->rowCount();
   }
-  public function getColums()
+  public function colums()
   {
     $this->execute();
     return $this->stmt->fetchAll(PDO::FETCH_COLUMN);

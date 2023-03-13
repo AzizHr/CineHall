@@ -8,4 +8,4 @@ define('DB_NAME', 'cinehall');
 // App Root
 define('APPROOT', dirname(dirname(__FILE__)));
 // URL Root
-define('URLROOT', 'http://localhost/brief_8_backend');
+define('URLROOT', 'http://localhost/CineHall/api');

@@ -6,8 +6,8 @@
    */
 class App
 {
-  protected $currentController = '';
-  protected $currentMethod = '';
+  protected $currentController = 'Movies';
+  protected $currentMethod = 'index';
   protected $params = [];
 
   public function __construct()
@@ -17,7 +17,7 @@ class App
     $url = $this->getUrl();
 
     // Look in controllers for first value
-    if (file_exists('../app/api/' . ucwords($url[0]) . '.php')) {
+    if (file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
       // If exists, set as controller
       $this->currentController = ucwords($url[0]);
       // Unset 0 Index
@@ -25,7 +25,7 @@ class App
     }
 
     // Require the controller
-    require_once '../app/api/' . $this->currentController . '.php';
+    require_once '../app/controllers/' . $this->currentController . '.php';
 
     // Instantiate controller class
     $this->currentController = new $this->currentController;

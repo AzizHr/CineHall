@@ -9,14 +9,14 @@
       <input
         class="border py-4 pl-3 rounded"
         type="text"
-        name="user_ref"
+        name="ref"
         placeholder="Enter your ref"
-        v-model="user_ref"
+        v-model="client_ref"
       />
       <input
         type="button"
         class="text-gray-200 bg-gradient-to-r from-orange-600 font-bold to-gray-900 hover:from-red-500 hover:to-gray-400 w-32 py-4 rounded mx-auto ring-1 ring-gray-300"
-        @click="login()"
+        @click="auth()"
         value="Login"
       />
     </form>
@@ -28,37 +28,40 @@ import axios from "axios";
 import Swal from "sweetalert2";
 export default {
   name: "LoginView",
+  mounted() {
+    if (localStorage.getItem("client_ref")) {
+      window.location = "http://localhost:8080/";
+    }
+  },
   data() {
     return {
-      user_ref: "",
+      client_ref: "",
       loggedUserData: "",
     };
   },
   methods: {
-    login() {
+    auth() {
       const formdata = new FormData();
-      formdata.append("user_ref", this.user_ref);
-      if (this.user_ref != "") {
+      formdata.append("ref", this.client_ref);
+      if (this.client_ref != "") {
         axios({
-          url: "http://localhost/CineHall/Backend/users/login",
+          url: "http://localhost/CineHall/api/clients/auth",
           method: "post",
           data: formdata,
-        })
-          .then((res) => {
-            // after sucess
+        }).then((res) => {
+          if (res.data == 0) {
             this.reset();
-            window.location = "http://localhost:8080/my-reservations";
-            localStorage.setItem("user_ref", res.data.user_ref);
-            localStorage.setItem("user_name", res.data.first_name);
-          })
-          .catch((err) => {
-            // on error
             Swal.fire({
               icon: "error",
-              title: "Failed",
-              text: `${err.data.invalid}`,
+              title: "Invalid",
+              text: "Your ref is invalid",
             });
-          });
+          } else {
+            window.location = "http://localhost:8080/my-reservations";
+            localStorage.setItem("client_ref", res.data.ref);
+            localStorage.setItem("client_name", res.data.first_name);
+          }
+        });
       } else {
         Swal.fire({
           icon: "error",
