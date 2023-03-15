@@ -30,7 +30,7 @@ export default {
   name: "LoginView",
   mounted() {
     if (localStorage.getItem("client_ref")) {
-      window.location = "http://localhost:8080/";
+      this.$router.push("/");
     }
   },
   data() {
@@ -57,7 +57,7 @@ export default {
               text: "Your ref is invalid",
             });
           } else {
-            window.location = "http://localhost:8080/my-reservations";
+            this.$router.push("/my-reservations");
             localStorage.setItem("client_ref", res.data.ref);
             localStorage.setItem("client_name", res.data.first_name);
           }

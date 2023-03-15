@@ -37,7 +37,7 @@ export default {
   name: "RegisterView",
   mounted() {
     if (localStorage.getItem("client_ref")) {
-      window.location = "http://localhost:8080/";
+      this.$router.push("/");
     }
   },
   data() {

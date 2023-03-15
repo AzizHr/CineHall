@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     if (!this.client_ref) {
-      window.location = "http://localhost:8080/login";
+      this.$router.push("/login");
     }
     axios
       .get(`http://localhost/CineHall/api/movies/show/${this.$route.query.id}`)

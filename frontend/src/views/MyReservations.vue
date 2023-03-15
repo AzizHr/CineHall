@@ -143,7 +143,7 @@ export default {
   },
   mounted() {
     if (!this.client_ref) {
-      window.location = "http://localhost:8080/login";
+      this.$router.push("/login");
     }
     this.getUserReservations();
   },
